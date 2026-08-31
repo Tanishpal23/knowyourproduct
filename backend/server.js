@@ -8,7 +8,7 @@ connectDB();
 
 const app = express();
 
-app.use(cors({ origin: "https://knowyourproduct-wine.vercel.app/", credentials: true }));
+app.use(cors({ origin: "https://knowyourproduct-wine.vercel.app", credentials: true }));
 app.use(express.json());
 
 app.use("/api/auth", require("./routes/auth"));
