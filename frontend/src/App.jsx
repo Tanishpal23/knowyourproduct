@@ -17,7 +17,13 @@ import ForgotPasswordPage   from './pages/ForgotPasswordPage';
 
 const ProtectedRoute = ({ children }) => {
   const { user, loading } = useAuth();
-  if (loading) return <div className="flex items-center justify-center h-screen"><div className="w-8 h-8 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"/></div>;
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-[60vh]" role="status" aria-label="Loading">
+        <div className="w-10 h-10 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
+  }
   return user ? children : <Navigate to="/login" replace />;
 };
 
@@ -25,7 +31,7 @@ function AppRoutes() {
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar />
-      <div style={{ height: '64px', flexShrink: 0 }} />
+      <div className="nav-spacer" />
       <main className="flex-1">
         <Routes>
           <Route path="/"            element={<LandingPage />} />
@@ -33,7 +39,7 @@ function AppRoutes() {
           <Route path="/search"      element={<SearchPage />} />
           <Route path="/product/:id" element={<ProductPage />} />
           <Route path="/compare"     element={<ComparePage />} />
-          <Route path="/login"       element={<LoginPage />} />
+          <Route path="/login"           element={<LoginPage />} />
           <Route path="/signup"           element={<SignupPage />} />
           <Route path="/forgot-password"  element={<ForgotPasswordPage />} />
           <Route path="/how-it-works"     element={<HowItWorksPage />} />

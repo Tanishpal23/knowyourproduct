@@ -121,8 +121,8 @@ const Captcha = forwardRef(function Captcha({ onValidChange, onValueChange }, re
 
   return (
     <div className="space-y-2">
-      <label className="block text-sm font-semibold text-slate-700">CAPTCHA Verification</label>
-      <div className="flex items-center gap-3">
+      <label htmlFor="captcha-input" className="block text-sm font-semibold text-slate-700">CAPTCHA Verification</label>
+      <div className="flex flex-wrap items-center gap-3">
         {/* Canvas */}
         <div className="relative rounded-xl overflow-hidden border border-slate-200 shadow-inner select-none">
           <canvas
@@ -139,7 +139,7 @@ const Captcha = forwardRef(function Captcha({ onValidChange, onValueChange }, re
           type="button"
           onClick={refresh}
           title="Get a new CAPTCHA"
-          className="p-2 rounded-xl hover:bg-indigo-50 text-indigo-500 hover:text-indigo-700 transition-colors border border-slate-200"
+          className="p-2.5 min-w-11 min-h-11 rounded-xl hover:bg-indigo-50 text-indigo-500 hover:text-indigo-700 transition-colors duration-200 border border-slate-200"
         >
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
             <path fillRule="evenodd" d="M15.312 11.424a5.5 5.5 0 0 1-9.201 2.466L6 13.938V11.5a.5.5 0 0 0-.5-.5H3.062a.5.5 0 0 0-.5.5v3.5a.5.5 0 0 0 .5.5h.938l.111-.111A7.5 7.5 0 0 0 17.5 10.5a.5.5 0 0 0-1 0 6.5 6.5 0 0 1-1.188.924ZM4.688 8.576A5.5 5.5 0 0 1 13.889 6.11L14 6.062V8.5a.5.5 0 0 0 .5.5h2.438a.5.5 0 0 0 .5-.5V5a.5.5 0 0 0-.5-.5h-.938l-.111.111A7.5 7.5 0 0 0 2.5 9.5a.5.5 0 0 0 1 0 6.5 6.5 0 0 1 1.188-.924Z" clipRule="evenodd" />
@@ -149,6 +149,7 @@ const Captcha = forwardRef(function Captcha({ onValidChange, onValueChange }, re
 
       {/* Input */}
       <input
+        id="captcha-input"
         type="text"
         value={value}
         onChange={handleChange}
@@ -156,8 +157,8 @@ const Captcha = forwardRef(function Captcha({ onValidChange, onValueChange }, re
         maxLength={6}
         autoComplete="off"
         spellCheck={false}
-        className={`w-full border rounded-xl px-4 py-3 text-sm tracking-widest font-mono outline-none transition-all
-          focus:ring-2 focus:ring-indigo-300 focus:border-transparent
+        className={`w-full border rounded-xl px-4 py-3 min-h-12 text-sm tracking-widest font-mono outline-none transition-all duration-200
+          focus:ring-2 focus:ring-indigo-300 focus:border-indigo-300 focus:shadow-[0_0_0_4px_rgba(99,102,241,0.12)]
           ${status === 'success' ? 'border-green-400 bg-green-50' : ''}
           ${status === 'error'   ? 'border-red-400 bg-red-50'   : ''}
           ${status === 'idle'    ? 'border-slate-200'           : ''}

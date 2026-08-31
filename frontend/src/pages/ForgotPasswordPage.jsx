@@ -89,11 +89,9 @@ export default function ForgotPasswordPage() {
   const labels  = ['Enter Email', 'Enter OTP', 'New Password', 'Done'];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 flex items-center justify-center px-4 py-12">
-      <div className="w-full max-w-md">
-        {/* Card */}
-        <div className="bg-white rounded-3xl shadow-2xl overflow-hidden">
-          {/* Header */}
+    <div className="min-h-[calc(100vh-72px)] bg-[var(--background)] flex items-center justify-center page-pad">
+      <div className="w-full page-shell page-shell--sm">
+        <div className="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden">
           <div className="bg-gradient-to-r from-indigo-600 to-teal-500 p-8 text-center">
             <div className="text-4xl mb-2">🔐</div>
             <h1 className="text-2xl font-black text-white">Forgot Password</h1>
@@ -141,7 +139,7 @@ export default function ForgotPasswordPage() {
                     value={email}
                     onChange={e => { setEmail(e.target.value); clearError(); }}
                     placeholder="you@example.com"
-                    className="w-full border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                    className="input-ring"
                     required
                     autoFocus
                   />
@@ -149,9 +147,9 @@ export default function ForgotPasswordPage() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full bg-indigo-600 text-white font-bold py-3 rounded-xl hover:bg-indigo-700 transition-colors disabled:opacity-60"
+                  className="btn-primary w-full"
                 >
-                  {loading ? 'Sending OTP…' : 'Send OTP →'}
+                  {loading ? 'Sending OTP…' : 'Send OTP'}
                 </button>
               </form>
             )}
@@ -168,7 +166,7 @@ export default function ForgotPasswordPage() {
                     value={otp}
                     onChange={e => { setOtp(e.target.value.replace(/\D/g, '')); clearError(); }}
                     placeholder="••••••"
-                    className="w-full border border-slate-200 rounded-xl px-4 py-3 text-center text-2xl font-bold tracking-[0.4em] focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="input-ring text-center text-2xl font-bold tracking-[0.4em]"
                     autoFocus
                   />
                   <p className="text-xs text-slate-500 mt-2 text-center">Check your inbox (and spam folder)</p>
@@ -176,9 +174,9 @@ export default function ForgotPasswordPage() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full bg-indigo-600 text-white font-bold py-3 rounded-xl hover:bg-indigo-700 transition-colors disabled:opacity-60"
+                  className="btn-primary w-full"
                 >
-                  {loading ? 'Verifying…' : 'Verify OTP →'}
+                  {loading ? 'Verifying…' : 'Verify OTP'}
                 </button>
 
                 {/* Resend */}
@@ -213,7 +211,7 @@ export default function ForgotPasswordPage() {
                     value={password}
                     onChange={e => { setPassword(e.target.value); clearError(); }}
                     placeholder="Min 6 characters"
-                    className="w-full border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="input-ring"
                     autoFocus
                   />
                 </div>
@@ -224,7 +222,7 @@ export default function ForgotPasswordPage() {
                     value={confirm}
                     onChange={e => { setConfirm(e.target.value); clearError(); }}
                     placeholder="Repeat new password"
-                    className="w-full border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="input-ring"
                   />
                 </div>
                 {/* Password strength indicator */}
@@ -244,9 +242,9 @@ export default function ForgotPasswordPage() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full bg-indigo-600 text-white font-bold py-3 rounded-xl hover:bg-indigo-700 transition-colors disabled:opacity-60"
+                  className="btn-primary w-full"
                 >
-                  {loading ? 'Resetting…' : 'Reset Password →'}
+                  {loading ? 'Resetting…' : 'Reset Password'}
                 </button>
               </form>
             )}
@@ -259,9 +257,9 @@ export default function ForgotPasswordPage() {
                 <p className="text-slate-500 text-sm mb-6">You can now log in with your new password.</p>
                 <button
                   onClick={() => navigate('/login')}
-                  className="w-full bg-indigo-600 text-white font-bold py-3 rounded-xl hover:bg-indigo-700 transition-colors"
+                  className="btn-primary w-full"
                 >
-                  Go to Login →
+                  Go to Login
                 </button>
               </div>
             )}

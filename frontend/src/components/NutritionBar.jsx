@@ -32,7 +32,7 @@ export default function NutritionBar({ nutrient, value }) {
   if (value === undefined || value === null) return null;
 
   return (
-    <div className="space-y-1">
+    <div className="space-y-1.5">
       <div className="flex justify-between items-center text-sm">
         <span className={`font-medium ${isHighConcern ? 'text-orange-600' : 'text-slate-700'}`}>
           {config.label}{isHighConcern ? ' ⚠' : ''}

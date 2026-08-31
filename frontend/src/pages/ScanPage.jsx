@@ -1,9 +1,9 @@
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getProductByBarcode, searchProducts } from '../services/api';
+import { getProductByBarcode } from '../services/api';
 
 export default function ScanPage() {
-  const [mode, setMode] = useState('manual');  // 'camera' | 'upload' | 'manual'
+  const [mode, setMode] = useState('manual');
   const [query, setQuery] = useState('');
   const [barcode, setBarcode] = useState('');
   const [scanning, setScanning] = useState(false);
@@ -39,7 +39,7 @@ export default function ScanPage() {
         () => {}
       );
       setCameraActive(true);
-    } catch (err) {
+    } catch {
       setError('Camera access denied or not available. Please allow camera access or use manual search.');
     }
   };
@@ -71,103 +71,98 @@ export default function ScanPage() {
   useEffect(() => { return () => stopCamera(); }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-indigo-50 py-12">
-      <div className="max-w-2xl mx-auto px-4 sm:px-6">
-        <div className="text-center mb-10">
-          <h1 className="text-4xl font-black text-slate-900 mb-3">Scan a Product</h1>
-          <p className="text-slate-600">Use your camera, upload an image, or search manually.</p>
+    <div className="min-h-screen bg-[var(--background)] page-pad">
+      <div className="page-shell page-shell--md">
+        <div className="text-center mb-10 fade-in-up">
+          <h1 className="page-title">Scan a Product</h1>
+          <p className="page-subtitle mx-auto">Use your camera, upload an image, or search manually.</p>
         </div>
 
-        {/* Mode tabs */}
         <div className="flex bg-white rounded-2xl p-1.5 shadow-sm border border-slate-100 mb-6">
-          {[['camera', '📷 Camera'], ['upload', '📁 Upload'], ['manual', '⌨️ Manual']].map(([m, label]) => (
-            <button key={m} onClick={() => { setMode(m); stopCamera(); setError(''); }}
-              className={`flex-1 py-2.5 rounded-xl text-sm font-semibold transition-all ${mode === m ? 'bg-indigo-600 text-white shadow-sm' : 'text-slate-600 hover:text-indigo-600'}`}>
+          {[['camera', 'Camera'], ['upload', 'Upload'], ['manual', 'Manual']].map(([m, label]) => (
+            <button key={m} type="button" onClick={() => { setMode(m); stopCamera(); setError(''); }}
+              className={`flex-1 py-2.5 min-h-11 rounded-xl text-sm font-semibold transition-all duration-200 ${mode === m ? 'bg-indigo-600 text-white shadow-sm' : 'text-slate-600 hover:text-indigo-600'}`}>
               {label}
             </button>
           ))}
         </div>
 
         {error && (
-          <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-2xl text-red-700 text-sm">{error}</div>
+          <div className="mb-5 p-4 bg-red-50 border border-red-200 rounded-2xl text-red-700 text-sm fade-in" role="alert">{error}</div>
         )}
 
-        {/* CAMERA MODE */}
         {mode === 'camera' && (
           <div className="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden">
             <div className="relative bg-slate-900 aspect-video" ref={scannerRef}>
               <div id="qr-reader" className="w-full h-full" />
               {!cameraActive && (
-                <div className="absolute inset-0 flex flex-col items-center justify-center text-white gap-4">
+                <div className="absolute inset-0 flex flex-col items-center justify-center text-white gap-5 px-4">
                   <div className="w-48 h-32 border-2 border-white/50 rounded-xl relative">
                     <div className="absolute top-0 left-0 w-5 h-5 border-t-2 border-l-2 border-indigo-400 rounded-tl" />
                     <div className="absolute top-0 right-0 w-5 h-5 border-t-2 border-r-2 border-indigo-400 rounded-tr" />
                     <div className="absolute bottom-0 left-0 w-5 h-5 border-b-2 border-l-2 border-indigo-400 rounded-bl" />
                     <div className="absolute bottom-0 right-0 w-5 h-5 border-b-2 border-r-2 border-indigo-400 rounded-br" />
-                    <div className="absolute inset-0 flex items-center justify-center text-slate-400 text-xs">Place barcode here</div>
+                    <div className="absolute inset-0 flex items-center justify-center text-slate-400 text-xs text-center px-2">Place barcode here</div>
                   </div>
-                  <button onClick={startCamera} className="bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-6 py-3 rounded-xl transition-colors">
+                  <button type="button" onClick={startCamera} className="btn-primary">
                     Start Camera
                   </button>
                 </div>
               )}
             </div>
             {cameraActive && (
-              <div className="p-4 text-center">
+              <div className="p-5 text-center">
                 <p className="text-sm text-slate-500 mb-3">Hold the barcode steady within the frame</p>
-                <button onClick={stopCamera} className="text-sm text-red-500 hover:text-red-700 font-medium">Stop Camera</button>
+                <button type="button" onClick={stopCamera} className="text-sm text-red-500 hover:text-red-700 font-medium min-h-11 px-3">Stop Camera</button>
               </div>
             )}
           </div>
         )}
 
-        {/* UPLOAD MODE */}
         {mode === 'upload' && (
-          <div className="bg-white rounded-3xl shadow-sm border border-slate-100 p-8">
-            <label className="block border-2 border-dashed border-slate-200 rounded-2xl p-10 text-center cursor-pointer hover:border-indigo-400 hover:bg-indigo-50 transition-all group">
-              <div className="text-5xl mb-3">📎</div>
+          <div className="bg-white rounded-3xl shadow-sm border border-slate-100 p-6 sm:p-8">
+            <label className="block border-2 border-dashed border-slate-200 rounded-2xl p-8 sm:p-10 text-center cursor-pointer hover:border-indigo-400 hover:bg-indigo-50 transition-all duration-200 group">
+              <div className="text-5xl mb-4" aria-hidden="true">📎</div>
               <p className="font-semibold text-slate-700 group-hover:text-indigo-700">Click to upload product label or barcode</p>
-              <p className="text-xs text-slate-400 mt-1">JPG, PNG, WEBP supported</p>
+              <p className="text-xs text-slate-400 mt-2">JPG, PNG, WEBP supported</p>
               <input type="file" accept="image/*" className="hidden" onChange={() => setError('Image barcode scanning coming soon! Please use camera or manual entry for now.')} />
             </label>
-            <p className="text-center text-xs text-slate-400 mt-4">Tip: For best results, scan barcodes using the camera option</p>
+            <p className="text-center text-xs text-slate-400 mt-5">Tip: For best results, scan barcodes using the camera option</p>
           </div>
         )}
 
-        {/* MANUAL MODE */}
         {mode === 'manual' && (
-          <div className="bg-white rounded-3xl shadow-sm border border-slate-100 p-6 space-y-4">
-            <form onSubmit={handleSearch}>
-              <label className="block text-sm font-semibold text-slate-700 mb-2">Search by product name</label>
-              <div className="flex gap-2">
+          <div className="bg-white rounded-3xl shadow-sm border border-slate-100 p-6 sm:p-8 space-y-6">
+            <form onSubmit={handleSearch} className="space-y-3">
+              <label className="block text-sm font-semibold text-slate-700">Search by product name</label>
+              <div className="flex flex-col sm:flex-row gap-2">
                 <input value={query} onChange={e => setQuery(e.target.value)}
                   placeholder="e.g. Coca Cola, Oreo, Maggi..."
-                  className="flex-1 border border-slate-200 rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-indigo-300 focus:border-transparent transition-all"
+                  className="input-ring flex-1 min-w-0"
                 />
-                <button type="submit" className="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-3 rounded-xl font-semibold text-sm transition-colors">
+                <button type="submit" className="btn-primary sm:px-6">
                   Search
                 </button>
               </div>
             </form>
             <div className="relative"><div className="absolute inset-0 flex items-center"><div className="w-full border-t border-slate-100" /></div><div className="relative flex justify-center"><span className="bg-white px-3 text-xs text-slate-400">or</span></div></div>
-            <form onSubmit={handleManualBarcode}>
-              <label className="block text-sm font-semibold text-slate-700 mb-2">Enter barcode number</label>
-              <div className="flex gap-2">
+            <form onSubmit={handleManualBarcode} className="space-y-3">
+              <label className="block text-sm font-semibold text-slate-700">Enter barcode number</label>
+              <div className="flex flex-col sm:flex-row gap-2">
                 <input value={barcode} onChange={e => setBarcode(e.target.value)}
                   placeholder="e.g. 0049000028911"
-                  className="flex-1 border border-slate-200 rounded-xl px-4 py-3 text-sm font-mono outline-none focus:ring-2 focus:ring-indigo-300 focus:border-transparent transition-all"
+                  className="input-ring flex-1 min-w-0 font-mono"
                 />
-                <button type="submit" disabled={scanning} className="bg-teal-600 hover:bg-teal-700 text-white px-5 py-3 rounded-xl font-semibold text-sm transition-colors">
-                  {scanning ? '...' : 'Look Up'}
+                <button type="submit" disabled={scanning} className="inline-flex items-center justify-center min-h-11 px-[18px] rounded-[10px] font-semibold text-sm text-white bg-teal-600 hover:bg-teal-700 transition-all duration-200 disabled:opacity-60 hover:-translate-y-px">
+                  {scanning ? 'Looking up…' : 'Look Up'}
                 </button>
               </div>
             </form>
           </div>
         )}
 
-        {/* Tips */}
-        <div className="mt-6 bg-indigo-50 rounded-2xl p-4 text-sm text-indigo-700">
-          <strong>💡 Tips:</strong> EAN-13, UPC-A, and QR codes are all supported. Make sure the barcode is well-lit and not blurry for best results.
+        <div className="mt-6 bg-indigo-50 rounded-2xl p-5 text-sm text-indigo-800 leading-relaxed border border-indigo-100">
+          <strong>Tips:</strong> EAN-13, UPC-A, and QR codes are all supported. Make sure the barcode is well-lit and not blurry for best results.
         </div>
       </div>
     </div>

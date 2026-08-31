@@ -19,7 +19,6 @@ export default function LoginPage() {
     e.preventDefault();
     setError('');
 
-    // Validate CAPTCHA first
     const captchaOk = captchaRef.current?.validate(captchaValue);
     if (!captchaOk) {
       captchaRef.current?.refresh();
@@ -39,54 +38,52 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-indigo-50 flex items-center justify-center px-4 py-12">
-      <div className="w-full max-w-md">
-        <div className="text-center mb-8">
+    <div className="min-h-[calc(100vh-72px)] bg-[var(--background)] flex items-center justify-center page-pad">
+      <div className="w-full page-shell page-shell--sm">
+        <div className="text-center mb-8 fade-in-up">
           <Link to="/" className="inline-flex items-center gap-2 mb-6">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-teal-500 flex items-center justify-center">
               <span className="text-white font-black">K</span>
             </div>
           </Link>
-          <h1 className="text-3xl font-black text-slate-900">Welcome back</h1>
-          <p className="text-slate-500 mt-2">Sign in to access your scan history and saved products</p>
+          <h1 className="page-title">Welcome back</h1>
+          <p className="page-subtitle mx-auto">Sign in to access your scan history and saved products</p>
         </div>
-        <div className="bg-white rounded-3xl shadow-sm border border-slate-100 p-8">
-          {error && <div className="mb-4 p-3 bg-red-50 text-red-700 rounded-xl text-sm border border-red-100">{error}</div>}
-          <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="bg-white rounded-3xl shadow-sm border border-slate-100 p-6 sm:p-8">
+          {error && <div className="mb-5 p-3 bg-red-50 text-red-700 rounded-xl text-sm border border-red-100" role="alert">{error}</div>}
+          <form onSubmit={handleSubmit} className="space-y-5">
             <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-1.5">Email</label>
-              <input type="email" required value={form.email} onChange={e => setForm({...form, email: e.target.value})}
+              <label htmlFor="login-email" className="block text-sm font-semibold text-slate-700 mb-2">Email</label>
+              <input id="login-email" type="email" required value={form.email} onChange={e => setForm({...form, email: e.target.value})}
                 placeholder="you@example.com"
-                className="w-full border border-slate-200 rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-indigo-300 focus:border-transparent transition-all"
+                className="input-ring"
               />
             </div>
             <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-1.5">Password</label>
-              <input type="password" required value={form.password} onChange={e => setForm({...form, password: e.target.value})}
+              <label htmlFor="login-password" className="block text-sm font-semibold text-slate-700 mb-2">Password</label>
+              <input id="login-password" type="password" required value={form.password} onChange={e => setForm({...form, password: e.target.value})}
                 placeholder="••••••••"
-                className="w-full border border-slate-200 rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-indigo-300 focus:border-transparent transition-all"
+                className="input-ring"
               />
             </div>
             <div className="flex justify-end">
-              <Link to="/forgot-password" className="text-xs text-indigo-500 hover:text-indigo-700 hover:underline">
+              <Link to="/forgot-password" className="text-sm text-indigo-600 hover:text-indigo-800 hover:underline transition-colors duration-200">
                 Forgot password?
               </Link>
             </div>
 
-            {/* CAPTCHA */}
             <Captcha ref={captchaRef} onValueChange={setCaptchaValue} />
 
-            <button type="submit" disabled={loading}
-              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-xl transition-colors disabled:opacity-60">
+            <button type="submit" disabled={loading} className="btn-primary w-full">
               {loading ? 'Signing in...' : 'Sign In'}
             </button>
           </form>
-          <p className="text-center text-sm text-slate-500 mt-5">
+          <p className="text-center text-sm text-slate-500 mt-6">
             Don't have an account?{' '}
-            <Link to="/signup" className="text-indigo-600 font-semibold hover:text-indigo-800">Create one free →</Link>
+            <Link to="/signup" className="text-indigo-600 font-semibold hover:text-indigo-800 transition-colors duration-200">Create one free →</Link>
           </p>
         </div>
-        <p className="text-center text-xs text-slate-400 mt-4">You can also scan and search products without an account.</p>
+        <p className="text-center text-xs text-slate-400 mt-5">You can also scan and search products without an account.</p>
       </div>
     </div>
   );

@@ -1,17 +1,15 @@
 import { useState } from 'react';
 import ConcernBadge from './ConcernBadge';
 
-const LEVEL_EMOJI = { low: '🟢', moderate: '🟡', high: '🟠', significant: '🔴' };
-
 export default function IngredientCard({ ingredient }) {
   const [expanded, setExpanded] = useState(false);
   const { name, concernLevel = 'low', simpleExplanation, purpose, evidenceSummary, regulatoryNotes, foundIn = [], evidenceLevel } = ingredient;
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden transition-shadow hover:shadow-md">
+    <div className="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden transition-all duration-200 hover:shadow-md hover:border-indigo-100">
       <button
         onClick={() => setExpanded(!expanded)}
-        className="w-full text-left p-4 flex items-start justify-between gap-3 group"
+        className="w-full text-left p-5 flex items-start justify-between gap-3 group min-h-14"
       >
         <div className="flex-1">
           <div className="flex items-center gap-2 flex-wrap mb-1">
@@ -30,7 +28,7 @@ export default function IngredientCard({ ingredient }) {
       </button>
 
       {expanded && (
-        <div className="px-4 pb-4 space-y-3 border-t border-slate-50 pt-3">
+        <div className="px-5 pb-5 space-y-3 border-t border-slate-100 pt-4 fade-in">
           {simpleExplanation && (
             <div>
               <h4 className="text-xs font-bold text-slate-500 uppercase tracking-wide mb-1">What is it?</h4>

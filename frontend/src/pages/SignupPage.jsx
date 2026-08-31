@@ -28,20 +28,20 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-indigo-50 flex items-center justify-center px-4 py-12">
-      <div className="w-full max-w-md">
-        <div className="text-center mb-8">
+    <div className="min-h-[calc(100vh-72px)] bg-[var(--background)] flex items-center justify-center page-pad">
+      <div className="w-full page-shell page-shell--sm">
+        <div className="text-center mb-8 fade-in-up">
           <Link to="/" className="inline-flex items-center gap-2 mb-6">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-teal-500 flex items-center justify-center">
               <span className="text-white font-black">K</span>
             </div>
           </Link>
-          <h1 className="text-3xl font-black text-slate-900">Create your account</h1>
-          <p className="text-slate-500 mt-2">Free forever • No credit card needed</p>
+          <h1 className="page-title">Create your account</h1>
+          <p className="page-subtitle mx-auto">Free forever · No credit card needed</p>
         </div>
-        <div className="bg-white rounded-3xl shadow-sm border border-slate-100 p-8">
-          {error && <div className="mb-4 p-3 bg-red-50 text-red-700 rounded-xl text-sm border border-red-100">{error}</div>}
-          <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="bg-white rounded-3xl shadow-sm border border-slate-100 p-6 sm:p-8">
+          {error && <div className="mb-5 p-3 bg-red-50 text-red-700 rounded-xl text-sm border border-red-100" role="alert">{error}</div>}
+          <form onSubmit={handleSubmit} className="space-y-5">
             {[
               { key: 'name', label: 'Full Name', type: 'text', placeholder: 'John Doe' },
               { key: 'email', label: 'Email', type: 'email', placeholder: 'you@example.com' },
@@ -49,21 +49,20 @@ export default function SignupPage() {
               { key: 'confirm', label: 'Confirm Password', type: 'password', placeholder: '••••••••' },
             ].map(f => (
               <div key={f.key}>
-                <label className="block text-sm font-semibold text-slate-700 mb-1.5">{f.label}</label>
-                <input type={f.type} required value={form[f.key]} placeholder={f.placeholder}
+                <label htmlFor={`signup-${f.key}`} className="block text-sm font-semibold text-slate-700 mb-2">{f.label}</label>
+                <input id={`signup-${f.key}`} type={f.type} required value={form[f.key]} placeholder={f.placeholder}
                   onChange={e => setForm({...form, [f.key]: e.target.value})}
-                  className="w-full border border-slate-200 rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-indigo-300 focus:border-transparent transition-all"
+                  className="input-ring"
                 />
               </div>
             ))}
-            <button type="submit" disabled={loading}
-              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-xl transition-colors disabled:opacity-60">
-              {loading ? 'Creating account...' : 'Create Account →'}
+            <button type="submit" disabled={loading} className="btn-primary w-full">
+              {loading ? 'Creating account...' : 'Create Account'}
             </button>
           </form>
-          <p className="text-center text-sm text-slate-500 mt-5">
+          <p className="text-center text-sm text-slate-500 mt-6">
             Already have an account?{' '}
-            <Link to="/login" className="text-indigo-600 font-semibold hover:text-indigo-800">Sign in</Link>
+            <Link to="/login" className="text-indigo-600 font-semibold hover:text-indigo-800 transition-colors duration-200">Sign in</Link>
           </p>
         </div>
       </div>

@@ -50,7 +50,6 @@ export default function ComparePage() {
     setLoading(false);
   };
 
-  const getVal = (product, key) => product?.nutrition?.[key] ?? '—';
   const isBetter = (p1, p2, key) => {
     const v1 = p1?.nutrition?.[key]; const v2 = p2?.nutrition?.[key];
     if (v1 === undefined || v2 === undefined) return null;
@@ -61,20 +60,19 @@ export default function ComparePage() {
   const products = comparison?.products || [];
 
   return (
-    <div className="min-h-screen bg-slate-50 py-10">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-10">
-          <h1 className="text-4xl font-black text-slate-900 mb-2">Compare Products</h1>
-          <p className="text-slate-500">Select two products to compare their scores, nutrition, and ingredients</p>
+    <div className="min-h-screen bg-[var(--background)] page-pad">
+      <div className="page-shell page-shell--lg">
+        <div className="text-center mb-10 sm:mb-12 fade-in-up">
+          <h1 className="page-title">Compare Products</h1>
+          <p className="page-subtitle mx-auto">Select two products to compare their scores, nutrition, and ingredients.</p>
         </div>
 
-        {/* Selectors */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
           {[0, 1].map(idx => (
-            <div key={idx} className="bg-white rounded-2xl border border-slate-100 shadow-sm p-4">
-              <p className="text-sm font-bold text-slate-500 mb-2">Product {idx + 1}</p>
+            <div key={idx} className="bg-white rounded-2xl border border-slate-100 shadow-sm p-5">
+              <p className="text-sm font-bold text-slate-500 mb-3">Product {idx + 1}</p>
               <select value={selected[idx] || ''} onChange={e => handleSelect(idx, e.target.value)}
-                className="w-full border border-slate-200 rounded-xl px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-indigo-300 bg-white">
+                className="input-ring w-full">
                 <option value="">Select a product...</option>
                 {allProducts.map(p => <option key={p._id} value={p._id}>{p.productName} — {p.brand}</option>)}
               </select>
@@ -82,48 +80,45 @@ export default function ComparePage() {
           ))}
         </div>
 
-        {error && <div className="mb-4 p-3 bg-red-50 text-red-700 rounded-xl text-sm border border-red-100">{error}</div>}
+        {error && <div className="mb-5 p-4 bg-red-50 text-red-700 rounded-xl text-sm border border-red-100" role="alert">{error}</div>}
 
-        <div className="text-center mb-8">
-          <button onClick={handleCompare} disabled={loading || !selected[0] || !selected[1]}
-            className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-8 py-3 rounded-2xl transition-colors disabled:opacity-50 text-sm">
-            {loading ? 'Comparing...' : '⚖ Compare Now'}
+        <div className="text-center mb-10">
+          <button type="button" onClick={handleCompare} disabled={loading || !selected[0] || !selected[1]}
+            className="btn-primary px-8">
+            {loading ? 'Comparing…' : 'Compare Now'}
           </button>
         </div>
 
         {comparison && products.length === 2 && (
-          <div className="space-y-6">
-            {/* Winner banner */}
+          <div className="space-y-6 fade-in-up">
             {comparison.betterChoiceName && (
-              <div className="bg-gradient-to-r from-green-50 to-teal-50 border border-green-200 rounded-3xl p-6 text-center">
-                <div className="text-3xl mb-2">🏆</div>
+              <div className="bg-gradient-to-r from-green-50 to-teal-50 border border-green-200 rounded-3xl p-6 sm:p-8 text-center">
+                <div className="text-3xl mb-3">🏆</div>
                 <h3 className="text-xl font-black text-slate-800">Better Overall Choice</h3>
-                <p className="text-lg font-bold text-green-700 mt-1">{comparison.betterChoiceName}</p>
-                <p className="text-sm text-slate-500 mt-2">Based on lower overall concern score. Consider your specific dietary needs when making your final choice.</p>
+                <p className="text-lg font-bold text-green-700 mt-2">{comparison.betterChoiceName}</p>
+                <p className="text-sm text-slate-500 mt-3 max-w-lg mx-auto">Based on lower overall concern score. Consider your specific dietary needs when making your final choice.</p>
               </div>
             )}
 
-            {/* Score compare */}
-            <div className="bg-white rounded-3xl border border-slate-100 shadow-sm p-6">
-              <h3 className="font-black text-slate-800 mb-4 text-lg">Overall Concern Score</h3>
-              <div className="grid grid-cols-2 gap-6">
-                {products.map((p, i) => (
+            <div className="bg-white rounded-3xl border border-slate-100 shadow-sm p-6 sm:p-8">
+              <h3 className="font-black text-slate-800 mb-6 text-lg">Overall Concern Score</h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                {products.map((p) => (
                   <div key={p._id} className="text-center">
-                    <Link to={`/product/${p._id}`} className="font-bold text-slate-700 text-sm hover:text-indigo-600 transition-colors block mb-2">{p.productName}</Link>
-                    <div className={`text-4xl font-black rounded-2xl py-4 ${scoreBg(p.concernScore)}`}>{p.concernScore?.toFixed(1)}<span className="text-lg font-normal">/10</span></div>
+                    <Link to={`/product/${p._id}`} className="font-bold text-slate-700 text-sm hover:text-indigo-600 transition-colors duration-200 block mb-3 break-words">{p.productName}</Link>
+                    <div className={`text-4xl font-black rounded-2xl py-5 ${scoreBg(p.concernScore)}`}>{p.concernScore?.toFixed(1)}<span className="text-lg font-normal">/10</span></div>
                     {comparison.betterChoice?.toString() === p._id?.toString() && (
-                      <div className="mt-2 text-xs bg-green-100 text-green-700 rounded-full px-3 py-1 inline-block font-semibold">Better Choice 🏆</div>
+                      <div className="mt-3 text-xs bg-green-100 text-green-700 rounded-full px-3 py-1.5 inline-block font-semibold">Better Choice</div>
                     )}
                   </div>
                 ))}
               </div>
             </div>
 
-            {/* Nutrition compare table */}
-            <div className="bg-white rounded-3xl border border-slate-100 shadow-sm p-6">
-              <h3 className="font-black text-slate-800 mb-4 text-lg">Nutrition Comparison</h3>
-              <div className="overflow-x-auto">
-                <table className="w-full text-sm">
+            <div className="bg-white rounded-3xl border border-slate-100 shadow-sm p-6 sm:p-8">
+              <h3 className="font-black text-slate-800 mb-5 text-lg">Nutrition Comparison</h3>
+              <div className="overflow-x-auto -mx-2 px-2">
+                <table className="w-full text-sm min-w-[28rem]">
                   <thead>
                     <tr>
                       <th className="text-left text-xs font-bold text-slate-500 uppercase tracking-wide pb-3 pr-4">Nutrient</th>
@@ -136,11 +131,11 @@ export default function ComparePage() {
                       const better0 = isBetter(products[0], products[1], f.key);
                       return (
                         <tr key={f.key} className="hover:bg-slate-50">
-                          <td className="py-2.5 pr-4 text-slate-600 font-medium">{f.label}</td>
+                          <td className="py-3 pr-4 text-slate-600 font-medium">{f.label}</td>
                           {products.map((p, i) => {
                             const myBetter = i === 0 ? better0 : better0 === null ? null : !better0;
                             return (
-                              <td key={p._id} className={`py-2.5 px-3 text-center font-semibold ${myBetter === true ? 'text-green-600' : myBetter === false ? 'text-red-500' : 'text-slate-700'}`}>
+                              <td key={p._id} className={`py-3 px-3 text-center font-semibold ${myBetter === true ? 'text-green-600' : myBetter === false ? 'text-red-500' : 'text-slate-700'}`}>
                                 {vals[i] !== undefined ? `${vals[i]}${f.unit}` : '—'}
                                 {myBetter === true && ' ✓'}
                               </td>
@@ -152,21 +147,20 @@ export default function ComparePage() {
                   </tbody>
                 </table>
               </div>
-              <p className="text-xs text-slate-400 mt-3">✓ indicates better value. Protein and Fiber: higher is better. All others: lower is better.</p>
+              <p className="text-xs text-slate-400 mt-4">✓ indicates better value. Protein and Fiber: higher is better. All others: lower is better.</p>
             </div>
 
-            {/* Allergens compare */}
-            <div className="bg-white rounded-3xl border border-slate-100 shadow-sm p-6">
-              <h3 className="font-black text-slate-800 mb-4 text-lg">Allergen Summary</h3>
-              <div className="grid grid-cols-2 gap-4">
+            <div className="bg-white rounded-3xl border border-slate-100 shadow-sm p-6 sm:p-8">
+              <h3 className="font-black text-slate-800 mb-5 text-lg">Allergen Summary</h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 {products.map(p => (
                   <div key={p._id}>
-                    <p className="text-sm font-bold text-slate-600 mb-2">{p.productName.split(' ').slice(0,2).join(' ')}</p>
+                    <p className="text-sm font-bold text-slate-600 mb-3 break-words">{p.productName.split(' ').slice(0,2).join(' ')}</p>
                     {p.allergens?.length ? (
                       <div className="flex flex-wrap gap-1.5">
-                        {p.allergens.map(a => <span key={a} className="px-2 py-1 bg-red-50 text-red-600 rounded-lg text-xs font-medium border border-red-100">{a}</span>)}
+                        {p.allergens.map(a => <span key={a} className="px-2.5 py-1 bg-red-50 text-red-600 rounded-lg text-xs font-medium border border-red-100">{a}</span>)}
                       </div>
-                    ) : <span className="text-xs text-green-600 font-medium">✓ No major allergens listed</span>}
+                    ) : <span className="text-xs text-green-600 font-medium">No major allergens listed</span>}
                   </div>
                 ))}
               </div>

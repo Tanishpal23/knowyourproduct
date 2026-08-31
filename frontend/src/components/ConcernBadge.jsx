@@ -8,7 +8,7 @@ const LEVELS = {
 export default function ConcernBadge({ level = 'low', size = 'sm' }) {
   const { label, className } = LEVELS[level] || LEVELS.low;
   return (
-    <span className={`inline-flex items-center px-2 py-0.5 rounded-full font-medium ${size === 'sm' ? 'text-xs' : 'text-sm px-3 py-1'} ${className}`}>
+    <span className={`inline-flex items-center px-2.5 py-1 rounded-full font-medium ${size === 'sm' ? 'text-xs' : 'text-sm px-3 py-1'} ${className}`}>
       {label}
     </span>
   );
