@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { login } from '../services/api';
 import { useAuth } from '../context/AuthContext';
+import Captcha from '../components/Captcha';
 
 export default function LoginPage() {
   const { user, loginUser } = useAuth();
@@ -9,18 +10,30 @@ export default function LoginPage() {
   const [form, setForm] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [captchaValue, setCaptchaValue] = useState('');
+  const captchaRef = useRef(null);
 
   useEffect(() => { if (user) navigate('/dashboard'); }, [user]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(''); setLoading(true);
+    setError('');
+
+    // Validate CAPTCHA first
+    const captchaOk = captchaRef.current?.validate(captchaValue);
+    if (!captchaOk) {
+      captchaRef.current?.refresh();
+      return;
+    }
+
+    setLoading(true);
     try {
       const res = await login(form);
       loginUser(res.data.token, res.data.user);
       navigate('/dashboard');
     } catch (err) {
       setError(err.response?.data?.message || 'Login failed. Please try again.');
+      captchaRef.current?.refresh();
     }
     setLoading(false);
   };
@@ -59,6 +72,10 @@ export default function LoginPage() {
                 Forgot password?
               </Link>
             </div>
+
+            {/* CAPTCHA */}
+            <Captcha ref={captchaRef} onValueChange={setCaptchaValue} />
+
             <button type="submit" disabled={loading}
               className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-xl transition-colors disabled:opacity-60">
               {loading ? 'Signing in...' : 'Sign In'}

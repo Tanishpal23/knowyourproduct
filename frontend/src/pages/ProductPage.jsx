@@ -140,9 +140,11 @@ export default function ProductPage() {
             {/* Image */}
             <div className="w-full sm:w-40 h-40 bg-gradient-to-br from-slate-50 to-slate-100 rounded-2xl flex items-center justify-center flex-shrink-0 border border-slate-100">
               {image
-                ? <img src={image} alt={productName} className="h-32 w-auto object-contain" />
-                : <span className="text-5xl">🛍️</span>
-              }
+                ? <img src={image} alt={productName} className="h-32 w-auto object-contain"
+                    onError={e => { e.target.style.display='none'; e.target.nextSibling.style.display='block'; }}
+                  />
+                : null}
+              <span className="text-5xl" style={{ display: image ? 'none' : 'block' }}>🛍️</span>
             </div>
             {/* Info */}
             <div className="flex-1">

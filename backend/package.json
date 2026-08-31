@@ -4,7 +4,10 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "seed": "node seed/seedData.js",
+        "seed": "node seed/seedData.js && node seed/moreProducts.js",
+        "seed:fresh": "node seed/seedData.js",
+        "seed:more": "node seed/moreProducts.js",
+        "update:images": "node seed/updateImages.js",
         "dev": "node server.js",
         "start": "node server.js"
     },
