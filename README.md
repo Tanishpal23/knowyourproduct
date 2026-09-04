@@ -13,6 +13,7 @@ KnowYourProduct is a full-stack health and nutrition web application designed to
 ## Tech Stack
 
 **Frontend:**
+
 - React 19 & Vite
 - Tailwind CSS v4 for responsive, modern UI
 - React Router DOM for routing
@@ -20,6 +21,7 @@ KnowYourProduct is a full-stack health and nutrition web application designed to
 - HTML5-QRCode for browser-based camera scanning
 
 **Backend (REST API):**
+
 - Node.js & Express.js
 - MongoDB & Mongoose (complex schemas with text-indexing)
 - JSON Web Tokens (JWT) & bcryptjs for secure authentication
@@ -28,44 +30,63 @@ KnowYourProduct is a full-stack health and nutrition web application designed to
 ## Running Locally
 
 ### Prerequisites
+
 Make sure you have [Node.js](https://nodejs.org/) and [MongoDB](https://www.mongodb.com/) installed on your machine.
 
 ### 1. Setup the Backend
+
 ```bash
 cd backend
 npm install
 ```
 
 Create a `.env` file in the `backend` directory and add the following variables:
+
 ```env
 PORT=5000
-MONGO_URI=your_mongodb_connection_string
-JWT_SECRET=your_jwt_secret_key
+JWT_SECRET=your_secret_jwt_key
+JWT_EXPIRE=7d
+NODE_ENV=development
+MONGODB_URI=mongodb+srv://<username>:<password>@cluster.mongodb.net/your_db_name
+
+# Email (OTP) — add your Gmail app password here
+# Go to Google Account → Security → 2-Step Verification → App Passwords
+EMAIL_HOST=smtp.gmail.com
+EMAIL_PORT=587
+EMAIL_USER=your_email@gmail.com
+EMAIL_PASS=your_app_password
+EMAIL_FROM=KnowYourProduct <your_email@gmail.com>
 ```
 
 Seed the database with sample product data (optional but recommended):
+
 ```bash
 npm run seed
 ```
 
 Start the backend server:
+
 ```bash
 npm run dev
 ```
 
 ### 2. Setup the Frontend
+
 Open a new terminal window:
+
 ```bash
 cd frontend
 npm install
 ```
 
 Create a `.env` file in the `frontend` directory and add your API URL:
+
 ```env
 VITE_API_URL=http://localhost:5000
 ```
 
 Start the Vite development server:
+
 ```bash
 npm run dev
 ```
