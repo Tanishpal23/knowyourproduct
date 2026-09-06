@@ -2,7 +2,6 @@ import axios from 'axios';
 
 // const api = axios.create({ baseURL: '/api' });
 const api = axios.create({
-  // baseURL: 'https://knowyourproduct-backend.vercel.app/api',
   baseURL: import.meta.env.VITE_API_URL + '/api',
 });
 
@@ -31,5 +30,6 @@ export const saveProduct         = (id)        => api.post(`/users/save/${id}`);
 export const removeSavedProduct  = (id)        => api.delete(`/users/save/${id}`);
 export const updatePreferences   = (prefs)     => api.put('/users/preferences', prefs);
 export const recordScan          = (id)        => api.post(`/users/scan/${id}`);
+export const removeScanHistory   = (id)        => api.delete(`/users/scan/${id}`);
 
 export default api;

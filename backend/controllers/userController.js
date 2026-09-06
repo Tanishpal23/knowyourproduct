@@ -67,3 +67,13 @@ exports.addScanHistory = async (req, res) => {
     res.status(500).json({ success: false, message: err.message });
   }
 };
+
+// @route DELETE /api/users/scan/:productId
+exports.removeScanHistory = async (req, res) => {
+  try {
+    await User.findByIdAndUpdate(req.user._id, { $pull: { scanHistory: { product: req.params.productId } } });
+    res.json({ success: true, message: 'Removed from history' });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+};

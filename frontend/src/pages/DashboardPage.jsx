@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { getDashboard } from '../services/api';
+import { getDashboard, removeSavedProduct, removeScanHistory } from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import ProductCard, { ProductCardSkeleton } from '../components/ProductCard';
 
@@ -9,6 +9,18 @@ export default function DashboardPage() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('history');
+
+  const handleRemoveHistory = async (e, id) => {
+    e.preventDefault();
+    await removeScanHistory(id);
+    setData(prev => ({ ...prev, scanHistory: prev.scanHistory.filter(h => h.product && h.product._id !== id) }));
+  };
+
+  const handleUnsave = async (e, id) => {
+    e.preventDefault();
+    await removeSavedProduct(id);
+    setData(prev => ({ ...prev, savedProducts: prev.savedProducts.filter(p => p._id !== id) }));
+  };
 
   useEffect(() => {
     getDashboard()
@@ -94,6 +106,9 @@ export default function DashboardPage() {
                 <div className={`px-2.5 py-1 rounded-full text-xs font-bold flex-shrink-0 ${SCORE_COLORS(item.product.concernScore || 0)}`}>
                   {item.product.concernScore?.toFixed(1)}/10
                 </div>
+                <button onClick={(e) => handleRemoveHistory(e, item.product._id)} className="ml-3 text-slate-400 hover:text-red-500 bg-slate-50 hover:bg-red-50 p-2 rounded-full transition-colors flex-shrink-0">
+                  🗑️
+                </button>
               </Link>
             ))}
           </div>
@@ -109,7 +124,14 @@ export default function DashboardPage() {
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 stagger-grid">
-              {data.savedProducts.map(p => <ProductCard key={p._id} product={p} />)}
+              {data.savedProducts.map(p => (
+                <div key={p._id} className="relative group">
+                  <ProductCard product={p} />
+                  <button onClick={(e) => handleUnsave(e, p._id)} className="absolute top-2 right-2 z-10 bg-white/90 shadow-sm text-red-500 hover:text-white hover:bg-red-500 p-2 border border-red-50 rounded-full transition-colors opacity-0 group-hover:opacity-100">
+                    ❌
+                  </button>
+                </div>
+              ))}
             </div>
           )
         )}
